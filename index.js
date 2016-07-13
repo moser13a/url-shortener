@@ -1,10 +1,9 @@
 var express = require('express');
 var app = express();
 var port = process.env.PORT || 8080;
-var db = require('./models/db');
 var Link = require('./models/links');
 var mongoose = require('mongoose');
-
+require('dotenv').config();
 app.set('view engine', "ejs");
 
 app.get('/',function(req, res) {
@@ -75,7 +74,7 @@ app.get('/new/http?s?:/*',function(req, res) {
 
 
 });
-mongoose.connect(db.url);
+mongoose.connect(process.env.DB_URL);
 app.listen(port,function() {
   console.log('On port', port);
 })
