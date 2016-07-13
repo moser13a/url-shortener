@@ -3,6 +3,8 @@ var app = express();
 var port = process.env.PORT || 8080;
 var Link = require('./models/links');
 var mongoose = require('mongoose');
+var dbrl = process.env.DB_URL;
+console.log(dbrl);
 require('dotenv').config();
 app.set('view engine', "ejs");
 
