@@ -8,8 +8,9 @@ var mongoose = require('mongoose');
 app.set('view engine', "ejs");
 
 app.get('/',function(req, res) {
+  console.log(req.headers.host, ' ', req.originalUrl);
   res.render('index');
-  console.log(db.url);
+
 });
 
 function saveLink(link) {
@@ -34,7 +35,7 @@ function saveLink(link, res){
     if (err) {
       console.error(err);
     }else {
-      Link.findOne().select('link -_id').sort('-created_at').exec(function(err, link) {
+      Link.findOne().select('link short_url -_id').sort('-created_at').exec(function(err, link) {
         console.log(link);
         res.json(link);
 
@@ -42,14 +43,30 @@ function saveLink(link, res){
     }
   });
 }
+app.get('/:urlId',function(req, res) {
+  Link.findOne({short_url: req.headers.host+'/'+req.params.urlId},function(err, link) {
+    if (link!=null) {
+      if (err) {
+        console.error(err);
+      }else {
+          res.redirect(link.link);
 
+      }
+    }else {
+      res.end('You have provided non existing short url, try again');
+
+    }
+
+  });
+});
 app.get('/new/http?s?:/*',function(req, res) {
   console.log(req.path);
   console.log(extractURL(req.path));
-
+  console.log(req.headers.host, ' ', req.originalUrl);
+  var shorId = Math.ceil((Math.random() * 8000) + 1000);
   if (isURL(extractURL(req.path))) {
     var validLink = extractURL(req.path);
-    var link = new Link({link: validLink});
+    var link = new Link({link: validLink,short_url:req.headers.host+'/'+shorId});
     saveLink(link,res);
   }else {
     res.json({'error':'Error, your link is invalid'})

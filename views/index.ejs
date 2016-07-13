@@ -6,6 +6,20 @@
   </head>
   <body>
     <h1>URL shortener</h1>
-    <blockquote><h3>This is a url shortener. Access the api thorught <code>GET /api/short</code></h3></blockquote>
+    <blockquote><h3>This is a url shortener. Access the api thorught <code>GET /new/&lt;URL_LINK></code></h3></blockquote>
+    <h3>Valid requests</h3>
+    <ul>
+      <li><code>/new/https://google.com</code></li>
+      <li><code>/new/https://www.google.com</code></li>
+      <li><code>/new/http://www.google.com</code></li>
+    </ul>
+    <h4>Example json response</h4>
+
+    <blockquote >
+      <code>{
+        "link":"https://www.google.com",
+        "short_url":"localhost:8080/5134"
+      }</code>
+    </blockquote>
   </body>
 </html>
